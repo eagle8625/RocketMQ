@@ -87,7 +87,7 @@ public class RemotingUtil {
                                 result = selectorProvider.openSelector();
                             }
                         }
-                    }
+                    } 
                     catch (final Exception e) {
                         // ignore
                     }
@@ -109,6 +109,7 @@ public class RemotingUtil {
     public static String getLocalAddress() {
         try {
             // Traversal Network interface to get the first non-loopback and non-private address
+        	//loopback address in windows is 127.0.0.1
             Enumeration<NetworkInterface> enumeration = NetworkInterface.getNetworkInterfaces();
             ArrayList<String> ipv4Result = new ArrayList<String>();
             ArrayList<String> ipv6Result = new ArrayList<String>();
@@ -134,8 +135,10 @@ public class RemotingUtil {
                     if (ip.startsWith("127.0") || ip.startsWith("192.168")) {
                         continue;
                     }
-
-                    return ip;
+                    //Return the ip belonging to the company's VPN. Add by Peter for vpn environment. 
+                    if(ip.startsWith("172")){
+                    	return ip;
+                    }
                 }
 
                 return ipv4Result.get(ipv4Result.size() - 1);
